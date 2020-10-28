@@ -5,6 +5,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     [SerializeField] float projectileSpeed = 4f;
+    [SerializeField] int damage = 1;
 
     Vector3 targetPoint;
     Rigidbody rigidbody;
@@ -56,5 +57,7 @@ public class Projectile : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         hitSomething = true;
+        if(!collision.gameObject.TryGetComponent<EnemyHealth>(out EnemyHealth enemyHealth)) { return; }
+        enemyHealth.DealDamage(damage);
     }
 }

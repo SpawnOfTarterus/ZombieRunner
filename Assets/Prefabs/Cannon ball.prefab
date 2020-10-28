@@ -110,6 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectileSpeed: 500
+  damage: 5
 --- !u!54 &5229223939582707838
 Rigidbody:
   m_ObjectHideFlags: 0

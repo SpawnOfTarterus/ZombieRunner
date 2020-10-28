@@ -8,6 +8,7 @@ public class Gun : MonoBehaviour
     [SerializeField] GameObject startGun = null;
     [SerializeField] GameObject projectile = null;
     [SerializeField] Transform projectileSpawnPos = null;
+    [SerializeField] ParticleSystem muzzleFlash = null;
     [SerializeField] float projectileSpeed = 1f;
 
     float raycastEquivilentMultiplyer = 1000f;
@@ -16,6 +17,7 @@ public class Gun : MonoBehaviour
     void Start()
     {
         GameObject currentGun = Instantiate(startGun, transform.position, Quaternion.identity, transform);
+        muzzleFlash = currentGun.GetComponentInChildren<ParticleSystem>();
     }
 
     // Update is called once per frame
@@ -29,6 +31,7 @@ public class Gun : MonoBehaviour
         if(Input.GetButtonDown("Fire1"))
         {
             RaycastHit hit;
+            muzzleFlash.Play();
             if(Physics.Raycast(myCamera.transform.position, myCamera.transform.forward, out hit, Mathf.Infinity))
             {
                 GameObject bulletInstance = Instantiate(projectile, projectileSpawnPos.position, transform.rotation);

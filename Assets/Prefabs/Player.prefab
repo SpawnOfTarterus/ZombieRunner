@@ -380,6 +380,7 @@ MonoBehaviour:
   startGun: {fileID: 6216563248018832182, guid: 61da46e98cbb1dd4aa98e44694f89270, type: 3}
   projectile: {fileID: 7574297237541959026, guid: 4eb71b59a008e474c80594f61defd69b, type: 3}
   projectileSpawnPos: {fileID: 1311080657256111634}
+  muzzleFlash: {fileID: 7147960193851280443, guid: 177e82ca8f21dc34ca846a0da2b7429b, type: 3}
   projectileSpeed: 1
 --- !u!1 &8936702441339562078
 GameObject:
