@@ -34,17 +34,20 @@ public class Gun : MonoBehaviour
             muzzleFlash.Play();
             if(Physics.Raycast(myCamera.transform.position, myCamera.transform.forward, out hit, Mathf.Infinity))
             {
-                GameObject bulletInstance = Instantiate(projectile, projectileSpawnPos.position, transform.rotation);
-                bulletInstance.GetComponent<Projectile>().SetTargetPoint(hit.point);
-                Destroy(bulletInstance, 3f);
+                SpawnProjectile(hit.point);
             }
             else
             {
-                GameObject bulletInstance = Instantiate(projectile, projectileSpawnPos.position, transform.rotation);
                 Vector3 fauxHitPoint = myCamera.transform.position + myCamera.transform.forward * raycastEquivilentMultiplyer;
-                bulletInstance.GetComponent<Projectile>().SetTargetPoint(fauxHitPoint);
-                Destroy(bulletInstance, 3f);
+                SpawnProjectile(fauxHitPoint);
             }
         }
+    }
+
+    private void SpawnProjectile(Vector3 targetDirection)
+    {
+        GameObject bulletInstance = Instantiate(projectile, projectileSpawnPos.position, transform.rotation);
+        bulletInstance.GetComponent<Projectile>().SetTargetPoint(targetDirection);
+        Destroy(bulletInstance, 3f);
     }
 }

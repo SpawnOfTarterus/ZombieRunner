@@ -6,10 +6,12 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField] float projectileSpeed = 4f;
     [SerializeField] int damage = 1;
+    [SerializeField] ParticleSystem hitEffect = null;
+    [SerializeField] float hitRadius = 0f;
 
     Vector3 targetPoint;
     Rigidbody rigidbody;
-    bool hitSomething = false;
+    int enemyLayer = 1 << 10;
 
     void Start()
     {
@@ -26,7 +28,7 @@ public class Projectile : MonoBehaviour
     {
         Vector3 rawSlope = targetPos - transform.position;
         float divisor = FindDivisor(rawSlope);
-        Vector3 forceToApply = GetSimplestSlope(rawSlope, divisor);
+        Vector3 forceToApply = rawSlope / divisor;
         return forceToApply;
     }
 
@@ -46,18 +48,40 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    private Vector3 GetSimplestSlope(Vector3 rawSlope, float divisor)
-    {
-        float newX = rawSlope.x / divisor;
-        float newY = rawSlope.y / divisor;
-        float newZ = rawSlope.z / divisor;
-        return new Vector3(newX, newY, newZ);
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
-        hitSomething = true;
-        if(!collision.gameObject.TryGetComponent<EnemyHealth>(out EnemyHealth enemyHealth)) { return; }
-        enemyHealth.DealDamage(damage);
+        PlayHitEffect();
+        if(collision.gameObject.TryGetComponent<EnemyHealth>(out EnemyHealth enemyHealth)) 
+        { 
+            enemyHealth.DealDamage(damage);
+            Destroy(gameObject);
+            return; 
+        }
+        CheckForDamageables();
+    }
+
+    private void PlayHitEffect()
+    {
+        GameObject hitEffectInstance = Instantiate(hitEffect.gameObject, transform.position, Quaternion.identity);
+        Destroy(hitEffectInstance, hitEffect.main.startLifetime.constantMax);
+    }
+
+    private void CheckForDamageables()
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, hitRadius, enemyLayer);
+        foreach(Collider hitCollider in hitColliders)
+        {
+            float distanceFromExplosionCenter = Vector3.Distance(transform.position, hitCollider.transform.position);
+            float explosionDamage = damage / (distanceFromExplosionCenter * distanceFromExplosionCenter);
+            EnemyHealth enemy = hitCollider.gameObject.GetComponent<EnemyHealth>();
+            enemy.DealDamage(Mathf.RoundToInt(explosionDamage));
+        }
+        Destroy(gameObject);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, hitRadius);
     }
 }

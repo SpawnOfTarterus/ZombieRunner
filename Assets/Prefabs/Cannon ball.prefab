@@ -111,6 +111,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileSpeed: 500
   damage: 5
+  hitEffect: {fileID: 7147960193851280443, guid: 8f2333540b582eb4ab969a6999b3d6c5, type: 3}
+  hitRadius: 2
 --- !u!54 &5229223939582707838
 Rigidbody:
   m_ObjectHideFlags: 0
