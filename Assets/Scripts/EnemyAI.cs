@@ -8,9 +8,9 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] Transform target = null;
     [SerializeField] float chaseRange = 5f;
 
+    Animator myAnimator;
     NavMeshAgent navMeshAgent;
     float distanceToTarget = Mathf.Infinity;
-    bool isProvoked = false;
 
     private void OnDrawGizmosSelected()
     {
@@ -20,6 +20,7 @@ public class EnemyAI : MonoBehaviour
 
     void Start()
     {
+        myAnimator = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
@@ -31,20 +32,21 @@ public class EnemyAI : MonoBehaviour
     private void CheckForTarget()
     {
         distanceToTarget = Vector3.Distance(target.position, transform.position);
-        if (distanceToTarget >= chaseRange) { isProvoked = false; return; }
+        if (distanceToTarget >= chaseRange) { myAnimator.SetBool("isProvoked", false); return; }
         ChaseTarget();
     }
 
     private void ChaseTarget()
     {
-        isProvoked = true;
+        myAnimator.SetBool("isProvoked", true);
         navMeshAgent.SetDestination(target.position);
-        if (distanceToTarget > navMeshAgent.stoppingDistance) { return; }
+        if (distanceToTarget > navMeshAgent.stoppingDistance) { myAnimator.SetBool("playerInRange", false); return; }
         EngageTarget();
     }
 
     private void EngageTarget()
     {
+        myAnimator.SetBool("playerInRange", true);
         transform.LookAt(target);
         Debug.Log("I am attacking.");
     }
