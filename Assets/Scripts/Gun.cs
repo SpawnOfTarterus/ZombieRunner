@@ -5,31 +5,58 @@ using UnityEngine;
 public class Gun : MonoBehaviour
 {
     [SerializeField] Camera myCamera = null;
-    [SerializeField] GameObject startGun = null;
     [SerializeField] GameObject projectile = null;
     [SerializeField] Transform projectileSpawnPos = null;
     [SerializeField] ParticleSystem muzzleFlash = null;
-    [SerializeField] float projectileSpeed = 1f;
+    [SerializeField] Ammo ammo = null;
 
     float raycastEquivilentMultiplyer = 1000f;
+    float noZoom = 60f;
+    float ironSightsZoom = 50f;
+
+    public void SetMyCamera(Camera camera)
+    {
+        myCamera = camera;
+    }
+
+    public void SetAmmo(Ammo thisAmmo)
+    {
+        ammo = thisAmmo;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        GameObject currentGun = Instantiate(startGun, transform.position, Quaternion.identity, transform);
-        muzzleFlash = currentGun.GetComponentInChildren<ParticleSystem>();
+        myCamera.fieldOfView = noZoom;
     }
 
     // Update is called once per frame
     void Update()
     {
         Fire();
+        ToggleZoom();
+    }
+
+    private void ToggleZoom()
+    {
+        if(Input.GetButtonDown("Fire2"))
+        {
+            if(myCamera.fieldOfView == noZoom)
+            {
+                myCamera.fieldOfView = ironSightsZoom;
+            }
+            else if(myCamera.fieldOfView == ironSightsZoom)
+            {
+                myCamera.fieldOfView = noZoom;
+            }
+        }
     }
 
     private void Fire()
     {
         if(Input.GetButtonDown("Fire1"))
         {
+            if(!ammo.CheckForAmmo()) { return; }
             RaycastHit hit;
             muzzleFlash.Play();
             if(Physics.Raycast(myCamera.transform.position, myCamera.transform.forward, out hit, Mathf.Infinity))
@@ -46,6 +73,7 @@ public class Gun : MonoBehaviour
 
     private void SpawnProjectile(Vector3 targetDirection)
     {
+        ammo.UseAmmo();
         GameObject bulletInstance = Instantiate(projectile, projectileSpawnPos.position, transform.rotation);
         bulletInstance.GetComponent<Projectile>().SetTargetPoint(targetDirection);
         Destroy(bulletInstance, 3f);

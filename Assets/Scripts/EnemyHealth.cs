@@ -15,6 +15,7 @@ public class EnemyHealth : MonoBehaviour
 
     public void DealDamage(int damage)
     {
+        GetComponent<EnemyAI>().ShotAt();
         currentHealth -= damage;
         if(currentHealth <= 0)
         {

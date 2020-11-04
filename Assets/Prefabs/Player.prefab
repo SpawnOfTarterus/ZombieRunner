@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5659625462131114060
+--- !u!1 &4627348736789749215
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,28 +8,42 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1311080657256111634}
+  - component: {fileID: 5368581172886750405}
+  - component: {fileID: 9043141295513358}
   m_Layer: 0
-  m_Name: ProjectileSpawnPos
+  m_Name: Ammo Bag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1311080657256111634
+--- !u!4 &5368581172886750405
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5659625462131114060}
+  m_GameObject: {fileID: 4627348736789749215}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.7}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1357644796634701055}
-  m_RootOrder: 0
+  m_Father: {fileID: 7066447760304784548}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9043141295513358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4627348736789749215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d02d5af63aab24393fcd37afa466f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentAmmo: 0
 --- !u!1 &7066447760305019008
 GameObject:
   m_ObjectHideFlags: 0
@@ -42,6 +56,8 @@ GameObject:
   - component: {fileID: 7066447760299801574}
   - component: {fileID: 7066447760292829990}
   - component: {fileID: 7066447760298978658}
+  - component: {fileID: 827163324}
+  - component: {fileID: 827163327}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -62,6 +78,7 @@ Transform:
   m_Children:
   - {fileID: 2290194886832466836}
   - {fileID: 7066447760304784550}
+  - {fileID: 5368581172886750405}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -164,6 +181,32 @@ MonoBehaviour:
     slowDownRate: 20
     airControl: 0
     shellOffset: 0
+--- !u!114 &827163324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7066447760305019008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50054fa271fa9db479123450e7060201, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+--- !u!114 &827163327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7066447760305019008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e65a04fc046eb545bef8919a6271a5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gunControl: {fileID: 7495916021672499245}
 --- !u!1 &7066447760305019010
 GameObject:
   m_ObjectHideFlags: 0
@@ -341,7 +384,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1357644796634701055}
-  - component: {fileID: 1035431181410094019}
+  - component: {fileID: 7252898811130149759}
   m_Layer: 0
   m_Name: Gun Position
   m_TagString: Untagged
@@ -359,12 +402,11 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.54, y: -0.42999804, z: 0.39}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1311080657256111634}
+  m_Children: []
   m_Father: {fileID: 7066447760304784550}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1035431181410094019
+--- !u!114 &7252898811130149759
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -373,15 +415,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 7495916021672499245}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2e89426e38b02444a6c0fd213093c94, type: 3}
+  m_Script: {fileID: 11500000, guid: 6388f54ce6b76da4c8368a7ab40e13a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   myCamera: {fileID: 7066447760304298662}
+  ammo: {fileID: 9043141295513358}
   startGun: {fileID: 6216563248018832182, guid: 61da46e98cbb1dd4aa98e44694f89270, type: 3}
-  projectile: {fileID: 7574297237541959026, guid: 4eb71b59a008e474c80594f61defd69b, type: 3}
-  projectileSpawnPos: {fileID: 1311080657256111634}
-  muzzleFlash: {fileID: 7147960193851280443, guid: 177e82ca8f21dc34ca846a0da2b7429b, type: 3}
-  projectileSpeed: 1
+  gunsInBag:
+  - {fileID: 6441983166045465750, guid: 61da46e98cbb1dd4aa98e44694f89270, type: 3}
+  - {fileID: -8385211486912942347, guid: 4978af27b5e9f6443a292eec2c858d36, type: 3}
 --- !u!1 &8936702441339562078
 GameObject:
   m_ObjectHideFlags: 0
