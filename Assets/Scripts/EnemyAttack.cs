@@ -20,6 +20,7 @@ public class EnemyAttack : MonoBehaviour
         target = enemyAI.GetTarget();
         if(!target) { return; }
         target.GetComponent<PlayerHealth>().DealDamage(Mathf.RoundToInt(damage));
+        
     }
 
 

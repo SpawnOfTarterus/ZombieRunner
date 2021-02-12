@@ -8,6 +8,7 @@ public class EquipedWeapon : MonoBehaviour
     [SerializeField] Ammo ammo = null;
     [SerializeField] GameObject startGun = null;
     [SerializeField] Gun[] gunsInBag = new Gun[0];
+    [SerializeField] HUDControl hud;
 
     GameObject currentGun;
 
@@ -41,6 +42,9 @@ public class EquipedWeapon : MonoBehaviour
         currentGun = Instantiate(gunToEquip, transform.position, transform.rotation, transform);
         currentGun.GetComponent<Gun>().SetMyCamera(myCamera);
         currentGun.GetComponent<Gun>().SetAmmo(ammo);
+        AmmoType ammoType = currentGun.GetComponent<Gun>().GetAmmoType();
+        int ammoAmount = ammo.GetAmmoAmount(ammoType);
+        hud.UpdateAmmoText(ammoType, ammoAmount);
     }
 
 }

@@ -10,6 +10,7 @@ public class EnemyAI : MonoBehaviour
     Transform target;
     Animator myAnimator;
     NavMeshAgent navMeshAgent;
+    EnemyHealth myHealth;
     float distanceToTarget = Mathf.Infinity;
     bool provoked = false;
     float awareTimer = 30f;
@@ -34,6 +35,7 @@ public class EnemyAI : MonoBehaviour
 
     void Start()
     {
+        myHealth = GetComponent<EnemyHealth>();
         target = FindObjectOfType<Player>().transform;
         currentChaseRange = normalChaseRange;
         myAnimator = GetComponent<Animator>();
@@ -42,28 +44,29 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
+        if(myHealth.GetDeadBool()) { navMeshAgent.ResetPath(); return; }
         CheckForTarget();
     }
 
     private void CheckForTarget()
     {
-        if(!target) { SetAnimationStateToIdle();  return; }
+        if(!target) { myAnimator.SetTrigger("isIdle");  return; }
         distanceToTarget = Vector3.Distance(target.position, transform.position);
-        if (distanceToTarget >= currentChaseRange) { myAnimator.SetBool("isProvoked", false); navMeshAgent.ResetPath(); return; }
+        if (distanceToTarget >= currentChaseRange) { myAnimator.SetTrigger("isIdle"); navMeshAgent.ResetPath(); return; }
         ChaseTarget();
     }
 
     private void ChaseTarget()
     {
-        myAnimator.SetBool("isProvoked", true);
+        myAnimator.SetTrigger("isProvoked");
         navMeshAgent.SetDestination(target.position);
-        if (distanceToTarget > navMeshAgent.stoppingDistance) { myAnimator.SetBool("playerInRange", false); return; }
+        if (distanceToTarget > navMeshAgent.stoppingDistance) { myAnimator.SetTrigger("isProvoked"); return; }
         EngageTarget();
     }
 
     private void EngageTarget()
     {
-        myAnimator.SetBool("playerInRange", true);
+        myAnimator.SetTrigger("playerInRange");
         transform.LookAt(target);
     }
 
@@ -78,11 +81,4 @@ public class EnemyAI : MonoBehaviour
         yield return new WaitForSeconds(awareTimer);
         currentChaseRange = normalChaseRange;
     }
-
-    private void SetAnimationStateToIdle()
-    {
-        myAnimator.SetBool("playerInRange", false);
-        myAnimator.SetBool("isProvoked", false);
-    }
-
 }

@@ -17,6 +17,8 @@ public class PlayerHealth : MonoBehaviour
     public void DealDamage(int damage)
     {
         currentHealth -= damage;
+        GetComponentInChildren<HUDControl>().UpdateHealthBar(currentHealth, maxHealth);
+        GetComponentInChildren<HUDControl>().DisplayDamageImage();
         if (currentHealth <= 0)
         {
             Die();
